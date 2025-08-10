@@ -1,6 +1,72 @@
 return {
   {
     "folke/snacks.nvim",
+    keys = {
+      {
+        "<leader>fD",
+        function()
+          require("snacks").picker.grep({
+            cwd = (require("lazyvim.util").root and require("lazyvim.util").root()) or vim.loop.cwd(),
+          })
+        end,
+        desc = "Grep Text (root dir, Snacks)",
+      },
+      {
+        "<leader>fd",
+        function()
+          local file = vim.api.nvim_buf_get_name(0)
+          if file == "" then
+            return
+          end
+          local dir = vim.fs.dirname(file)
+          local name = vim.fs.basename(file)
+
+          require("snacks").picker.grep({
+            cwd = dir,
+            files = { name },
+          })
+        end,
+        desc = "Grep Text (current dir, Snacks)",
+      },
+      {
+        "<leader>fc",
+        function()
+          local file = vim.api.nvim_buf_get_name(0)
+          if file == "" then
+            return
+          end
+          local dir = vim.fs.dirname(file)
+          local name = vim.fs.basename(file)
+
+          require("snacks").picker.grep({
+            cwd = dir,
+            args = { "-g", name },
+          })
+        end,
+        desc = "Fuzzy Text in Current Buffer (Snacks, only this file)",
+      },
+      {
+        "<leader>fF",
+        function()
+          require("snacks").picker.files({
+            cwd = (require("lazyvim.util").root and require("lazyvim.util").root()) or vim.loop.cwd(),
+          })
+        end,
+        desc = "Files (root, Snacks)",
+      },
+      {
+        "<leader>ff",
+        function()
+          require("snacks").picker.files({ cwd = vim.loop.cwd() })
+        end,
+        desc = "Files (cwd, Snacks)",
+      },
+    },
+    -- keys = {
+    --   { "<leader>ff", false, mode = "n" },
+    --   { "<leader>fF", false, mode = "n" },
+    --   { "<leader>fd", false, mode = "n" },
+    -- },
     opts = {
       picker = {
         sources = {

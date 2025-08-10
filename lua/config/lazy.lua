@@ -17,8 +17,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
-    { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- import/override with your plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins", opts = { colorscheme = "catppuccin" } },
 
     -- theme
@@ -28,64 +26,6 @@ require("lazy").setup({
     -- end of your imports
 
     { import = "plugins" },
-
-    {
-      "williamboman/mason.nvim",
-      opts = function(_, opts)
-        opts.ensure_installed = opts.ensure_installed or {}
-        vim.list_extend(opts.ensure_installed, {
-          "gopls",
-          "gofumpt",
-          "goimports",
-          "delve",
-          "ruff",
-          "ruff-lsp",
-          "black",
-          "isort",
-          "pyright",
-          "bash-language-server",
-          "shellcheck",
-          "shfmt",
-        })
-      end,
-    },
-    {
-      "stevearc/conform.nvim",
-      opts = {
-        format_on_save = { timeout_ms = 1500, lsp_fallback = true },
-        formatters_by_ft = {
-          go = { "gofumpt", "goimports" },
-          python = { "isort", "black" },
-          sh = { "shfmt" },
-          bash = { "shfmt" },
-          zsh = { "shfmt" },
-        },
-      },
-    },
-    {
-      "neovim/nvim-lspconfig",
-      opts = {
-        servers = {
-          gopls = {
-            settings = {
-              gopls = {
-                gofumpt = true,
-                staticcheck = true,
-                analyses = { unusedparams = true, shadow = true },
-              },
-            },
-          },
-          bashls = {},
-        },
-      },
-    },
-    {
-      "nvim-treesitter/nvim-treesitter",
-      opts = function(_, opts)
-        opts.ensure_installed = opts.ensure_installed or {}
-        vim.list_extend(opts.ensure_installed, { "go", "gomod", "gosum", "gowork", "python", "bash" })
-      end,
-    },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.

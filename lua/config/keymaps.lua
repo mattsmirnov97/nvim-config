@@ -8,7 +8,6 @@ pcall(vim.keymap.del, "n", "<leader>qa")
 -- <leader>q = :q
 vim.keymap.set("n", "<leader>q", "<cmd>close<cr>", { desc = "Close split", silent = true, nowait = true })
 
--- lua/config/keymaps.lua
 local map = vim.keymap.set
 
 map("n", "<A-w>", "<C-w>k", { desc = "Window Up", silent = true, nowait = true })
