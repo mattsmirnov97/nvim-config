@@ -62,11 +62,6 @@ return {
         desc = "Files (cwd, Snacks)",
       },
     },
-    -- keys = {
-    --   { "<leader>ff", false, mode = "n" },
-    --   { "<leader>fF", false, mode = "n" },
-    --   { "<leader>fd", false, mode = "n" },
-    -- },
     opts = {
       picker = {
         sources = {
