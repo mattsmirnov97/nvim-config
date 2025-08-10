@@ -86,6 +86,22 @@ return {
               },
             },
             win = {
+              input = {
+                keys = {
+                  ["<A-w>"] = function()
+                    vim.cmd("wincmd k")
+                  end,
+                  ["<A-a>"] = function()
+                    vim.cmd("wincmd h")
+                  end,
+                  ["<A-s>"] = function()
+                    vim.cmd("wincmd j")
+                  end,
+                  ["<A-d>"] = function()
+                    vim.cmd("wincmd l")
+                  end,
+                },
+              },
               list = {
                 keys = {
                   ["y"] = "fs_yank",
