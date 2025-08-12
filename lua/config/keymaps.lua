@@ -19,3 +19,7 @@ map("t", "<A-w>", [[<C-\><C-n><C-w>k]], { desc = "Window Up (term)", silent = tr
 map("t", "<A-a>", [[<C-\><C-n><C-w>h]], { desc = "Window Left (term)", silent = true, nowait = true })
 map("t", "<A-s>", [[<C-\><C-n><C-w>j]], { desc = "Window Down (term)", silent = true, nowait = true })
 map("t", "<A-d>", [[<C-\><C-n><C-w>l]], { desc = "Window Right (term)", silent = true, nowait = true })
+
+-- Visual: Tab -> indent, Shift-Tab -> outdent
+vim.keymap.set("x", "<Tab>", ">gv", { desc = "Indent selection", silent = true })
+vim.keymap.set("x", "<S-Tab>", "<gv", { desc = "Outdent selection", silent = true })
