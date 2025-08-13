@@ -3,6 +3,31 @@ return {
   {
     "MagicDuck/grug-far.nvim",
     opts = {},
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "grug-far", "grugfar" },
+        callback = function(ev)
+          local function feed(keys)
+            local k = vim.api.nvim_replace_termcodes(keys, true, false, true)
+            vim.api.nvim_feedkeys(k, "m", false)
+          end
+          local ll = vim.g.maplocalleader or "\\"
+          local function map_alt(ch)
+            local lhs = "<A-" .. ch .. ">"
+            local rhs = ll .. ch
+            vim.keymap.set({ "n", "i" }, lhs, function()
+              if vim.fn.mode() ~= "n" then
+                feed("<Esc>")
+              end
+              feed(rhs)
+            end, { buffer = ev.buf, silent = true, nowait = true })
+          end
+          for ch in ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"):gmatch(".") do
+            map_alt(ch)
+          end
+        end,
+      })
+    end,
     keys = {
       { "<leader>sr", false },
       {
