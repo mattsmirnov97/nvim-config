@@ -49,10 +49,10 @@ return {
         "<leader>fF",
         function()
           require("snacks").picker.files({
-            cwd = (require("lazyvim.util").root and require("lazyvim.util").root()) or vim.loop.cwd(),
+            cwd = "/",
           })
         end,
-        desc = "Files (root, Snacks)",
+        desc = "Files (Filesystem root, Snacks)",
       },
       {
         "<leader>ff",
