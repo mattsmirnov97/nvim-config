@@ -9,7 +9,6 @@ return {
         "goimports",
         "delve",
         "ruff",
-        "ruff-lsp",
         "black",
         "isort",
         "pyright",
