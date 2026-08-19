@@ -64,6 +64,15 @@ return {
     },
     opts = {
       picker = {
+        previewers = {
+          file = {
+            -- default 1MB blocks preview of multi-MB log files with a
+            -- "large file > 1MB" warning instead of showing content
+            max_size = 20 * 1024 * 1024, -- 20MB
+            -- default 500 truncates long log lines (e.g. JSON logs)
+            max_line_length = 5000,
+          },
+        },
         sources = {
           explorer = {
             actions = {
