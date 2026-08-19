@@ -1,3 +1,10 @@
+-- private state for the explorer's yank/cut/paste actions below — must NOT
+-- live on the global `Snacks` table: it has a magic __index that treats any
+-- unset key as `require("snacks.<key>")`, so reading e.g. fs_clipboard
+-- before it's ever been written crashes trying to require a module that
+-- doesn't exist.
+local fs_clipboard = { mode = "copy", items = {} }
+
 return {
   {
     "folke/snacks.nvim",
@@ -82,13 +89,13 @@ return {
                 action = function(p, item)
                   local sel = p:selected()
                   local list = (#sel > 0) and sel or (item and { item } or {})
-                  Snacks._fs_clipboard = { mode = "copy", items = {} }
+                  fs_clipboard = { mode = "copy", items = {} }
                   for _, it in ipairs(list) do
                     if it.file then
-                      table.insert(Snacks._fs_clipboard.items, it.file)
+                      table.insert(fs_clipboard.items, it.file)
                     end
                   end
-                  Snacks.notify.info("Yanked " .. #Snacks._fs_clipboard.items .. " item(s)")
+                  Snacks.notify.info("Yanked " .. #fs_clipboard.items .. " item(s)")
                 end,
               },
               -- cut (move) selection
@@ -97,13 +104,13 @@ return {
                 action = function(p, item)
                   local sel = p:selected()
                   local list = (#sel > 0) and sel or (item and { item } or {})
-                  Snacks._fs_clipboard = { mode = "move", items = {} }
+                  fs_clipboard = { mode = "move", items = {} }
                   for _, it in ipairs(list) do
                     if it.file then
-                      table.insert(Snacks._fs_clipboard.items, it.file)
+                      table.insert(fs_clipboard.items, it.file)
                     end
                   end
-                  Snacks.notify.info("Cut " .. #Snacks._fs_clipboard.items .. " item(s)")
+                  Snacks.notify.info("Cut " .. #fs_clipboard.items .. " item(s)")
                 end,
               },
               -- paste into cwd or into dir under cursor
@@ -111,7 +118,7 @@ return {
                 desc = "Paste files/dirs (into dir under cursor; if on file → its parent)",
                 action = function(p, item)
                   local fn = vim.fn
-                  local clip = Snacks._fs_clipboard
+                  local clip = fs_clipboard
                   if not clip or not clip.items or #clip.items == 0 then
                     Snacks.notify.warn("Clipboard is empty")
                     return
@@ -150,7 +157,7 @@ return {
                       dest_dir
                     )
                   )
-                  Snacks._fs_clipboard = { mode = "copy", items = {} }
+                  fs_clipboard = { mode = "copy", items = {} }
                   p:action("refresh")
                 end,
               },
