@@ -44,6 +44,38 @@ return {
           end,
           "fallback",
         },
+        -- Tab jumps out of the pair mini.pairs just closed (or to the next
+        -- snippet placeholder first, if one is active) instead of indenting.
+        -- Steps over exactly one closer per press — one Tab = one nesting
+        -- level, so `)}` needs two presses, matching how the pair was built
+        -- up in the first place. Returns the actual <Right> keycode rather
+        -- than mutating the cursor directly — this runs inside an
+        -- expr-mapping, and buffer/window edits are textlocked there, so
+        -- nvim_win_set_cursor is a silent no-op; only returning keys to be
+        -- fed is safe.
+        ["<Tab>"] = {
+          "snippet_forward",
+          function()
+            local close_chars = { [")"] = true, ["]"] = true, ["}"] = true, ['"'] = true, ["'"] = true, ["`"] = true }
+            local col = vim.fn.col(".")
+            local char = vim.fn.getline("."):sub(col, col)
+            if not close_chars[char] then return false end
+            return vim.api.nvim_replace_termcodes("<Right>", true, true, true)
+          end,
+          "fallback",
+        },
+      },
+
+      -- cmdline (":") completion has its own keymap preset, independent of
+      -- `keymap` above — the default 'cmdline' preset only binds <Tab>/
+      -- <S-Tab>/<C-n>/<C-p>/<Right>/<Left> to move through the popup, not
+      -- the arrow keys, which is why <Down> did nothing.
+      cmdline = {
+        keymap = {
+          preset = "cmdline",
+          ["<Down>"] = { "select_next", "fallback" },
+          ["<Up>"] = { "select_prev", "fallback" },
+        },
       },
     },
   },
