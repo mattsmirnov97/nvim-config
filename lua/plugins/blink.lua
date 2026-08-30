@@ -65,6 +65,18 @@ return {
           "fallback",
         },
       },
+
+      -- cmdline (":") completion has its own keymap preset, independent of
+      -- `keymap` above — the default 'cmdline' preset only binds <Tab>/
+      -- <S-Tab>/<C-n>/<C-p>/<Right>/<Left> to move through the popup, not
+      -- the arrow keys, which is why <Down> did nothing.
+      cmdline = {
+        keymap = {
+          preset = "cmdline",
+          ["<Down>"] = { "select_next", "fallback" },
+          ["<Up>"] = { "select_prev", "fallback" },
+        },
+      },
     },
   },
 }
