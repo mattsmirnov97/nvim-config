@@ -81,6 +81,12 @@ return {
           },
         },
         sources = {
+          -- always show the references picker, even for a single match —
+          -- upstream default auto-jumps on 1 result, which reads as "gr did
+          -- nothing but scroll" since the list never appears
+          lsp_references = {
+            auto_confirm = false,
+          },
           explorer = {
             actions = {
               -- copy selection (files or directories)
